@@ -1,0 +1,71 @@
+<!-- include header -->
+<%- include('include/_header.ejs') %>
+<!-- /include header -->
+
+<!-- Main Site -->
+<main id="site-main">
+    <div class="container">
+        <% if(role == "Admin") {%>
+        
+        <div class="box-nav d-flex justify-between">
+            <a href="/add-user" class="border-shadow">
+                <span class="text-gradient">New User <i class="fa-solid fa-user"></i></span>
+            </a>
+        </div>
+        
+        <% }%>
+        <!-- form handling -->
+        <form action="/" method="POST">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>@Email</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> 1 </td>
+                        <td>Jatin Ranpariya</td>
+                        <td>jatin@gmail.com</td>
+                        <td>Male</td>
+                        <td>Active</td>
+                        <td>
+                            <a class="btn-border-shadow update">
+                                <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                            </a>
+                            <a class="btn-border-shadow delete">
+                                <span class="text-gradient"><i class="fas fa-times"></i></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> 2 </td>
+                        <td>Jatin Ranpariya</td>
+                        <td>jatin@gmail.com</td>
+                        <td>Male</td>
+                        <td>Active</td>
+                        <td>
+                            <a class="btn-border-shadow update">
+                                <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                            </a>
+                            <a class="btn-border-shadow delete">
+                                <span class="text-gradient"><i class="fas fa-times"></i></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <!-- /form handling -->
+    </div>
+</main>
+<!-- /Main Site -->
+
+<!-- include footer -->
+    <%- include('include/_footer.ejs') %>
+<!-- /include footer -->
