@@ -16,6 +16,7 @@ const customerSchema = new Schema({
 
 const productSchema = new Schema({
     productName: { type: String, required: true },
+    image: {type: String},
     amount: { type: Number, required: true },
 });
 

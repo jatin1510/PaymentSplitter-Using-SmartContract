@@ -240,3 +240,11 @@ select, button {
     background-color: var(--dark);
     color: var(--border);
 }
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}

@@ -1,0 +1,155 @@
+<html lang="en">
+
+<head>
+    <title>Harvest vase</title>
+    <link href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi"
+        rel="stylesheet">
+    <style>
+        /* 
+* Design by Robert Mayer:https://goo.gl/CJ7yC8
+*
+*I intentionally left out the line that was supposed to be below the subheader simply because I don't like how it looks.
+*
+* Chronicle Display Roman font was substituted for similar fonts from Google Fonts.
+*/
+
+        body {
+            background-color: #fdf1ec;
+        }
+
+        .wrapper {
+            height: 420px;
+            width: 654px;
+            margin: 50px auto;
+            border-radius: 7px 7px 7px 7px;
+            /* VIA CSS MATIC https://goo.gl/cIbnS */
+            -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            float: left;
+            height: 420px;
+            width: 327px;
+        }
+
+        .product-img img {
+            border-radius: 7px 0 0 7px;
+        }
+
+        .product-info {
+            float: left;
+            height: 420px;
+            width: 327px;
+            border-radius: 0 7px 10px 7px;
+            background-color: #ffffff;
+        }
+
+        .product-text {
+            height: 300px;
+            width: 327px;
+        }
+
+        .product-text h1 {
+            margin: 0 0 0 38px;
+            padding-top: 52px;
+            font-size: 34px;
+            color: #474747;
+        }
+
+        .product-text h1,
+        .product-price-btn p {
+            font-family: 'Bentham', serif;
+        }
+
+
+        .product-text p {
+            height: 125px;
+            margin: 0 0 0 38px;
+            font-family: 'Playfair Display', serif;
+            color: #8d8d8d;
+            line-height: 1.7em;
+            font-size: 15px;
+            font-weight: lighter;
+            overflow: hidden;
+        }
+
+        .product-price-btn {
+            height: 103px;
+            width: 327px;
+            margin-top: 17px;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
+
+        h2 {
+            display: inline-block;
+            position: absolute;
+            height: 50px;
+            font-family: 'Trocchi', serif;
+            margin: 0 0 0 38px;
+            font-size: 28px;
+            font-weight: lighter;
+            color: #474747;
+            margin-top: 2ex;
+        }
+
+        .product-price-btn button {
+            float: right;
+            display: inline-block;
+            height: 50px;
+            width: 136px;
+            margin: 0 10px 0 12px;
+            box-sizing: border-box;
+            border: transparent;
+            border-radius: 60px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            background-color: #9cebd5;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .product-price-btn button:hover {
+            background-color: #79b0a1;
+        }
+
+        a{
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="product-img">
+            <img src="http://bit.ly/2tMBBTd" height="420" width="327">
+        </div>
+        <div class="product-info">
+            <div class="product-text">
+                <h1>
+                    <%= data.productName %>
+                </h1>
+                <h2>Amount : <%= data.amount %>$</h2>
+            </div>
+            <div class="product-price-btn">
+                <a href="">
+                    <button type="button">buy now</button>
+                </a>
+                <a href="/product">
+                    <button type="button">Cancel</button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

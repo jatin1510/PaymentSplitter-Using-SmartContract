@@ -24,5 +24,6 @@ route.post('/registerCustomer', controller.registerCustomer);
 // development (TODO: Authorize)
 route.post('/addProduct', controller.addProduct);
 route.post('/addCompany', controller.addCompany);
+route.get('/product', services.products);
 
 module.exports = route;
