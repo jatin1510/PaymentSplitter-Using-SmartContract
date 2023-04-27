@@ -14,7 +14,7 @@ route.post('/registerAdmin', controller.registerAdmin);
 route.post('/registerCustomer', controller.registerCustomer);
 
 // Route for communicating with contracts
-// route.get('/totalShare', controller.totalShare);
+route.get('/totalShare', controller.totalShare);
 // route.get('/totalPaid', controller.totalPaid);
 // route.get('/payableAmount', controller.payableAmount);
 // route.get('/addCompany', controller.addCompany);
@@ -22,8 +22,15 @@ route.post('/registerCustomer', controller.registerCustomer);
 // route.get('/sendCompany', controller.sendCompany);
 
 // development (TODO: Authorize)
-route.post('/addProduct', controller.addProduct);
-route.post('/addCompany', controller.addCompany);
-route.get('/product', services.products);
+route.get('/productForm', authorizationAdmin,services.productForm);
+route.get('/companyForm', authorizationAdmin,services.companyForm);
+route.post('/addProduct', authorizationAdmin, controller.addProduct);
+route.post('/addCompany', authorizationAdmin, controller.addCompany);
+route.get('/product', authorization, services.products);
+route.get('/buy/:id', authorization, controller.buyProdut);
+route.get('/payNow/:productId', authorization, controller.payNow);
+route.get('/companies', authorizationAdmin, services.companies);
+route.get('/delete',controller.deleteIt);
+route.get('/deleteCompany/:companyId',authorizationAdmin,services.deleteCompany);
 
 module.exports = route;

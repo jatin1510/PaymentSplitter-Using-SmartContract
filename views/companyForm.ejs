@@ -1,0 +1,53 @@
+<!-- include header -->
+<%- include('include/_header.ejs') %>
+    <!-- /include header -->
+
+    <!-- Main Site -->
+    <main id="site-main">
+        <div class="container">
+
+
+            <div class="form-title text-center">
+                <h2 class="text-dark">Register Company</h2>
+            </div>
+
+            <!-- add user form -->
+            <!-- form handling -->
+            <form action="/addCompany" method="POST" id="add_user">
+                <div class="new_user">
+                    <div class="form-group">
+                        <label for="address" class="text-light">Account address </label>
+                        <input type="text" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="product" class="text-light">Product id</label>
+                        <input type="text" name="product">
+                    </div>
+                    <div class="form-group">
+                        <label for="share" class="text-light">Amount of share</label>
+                        <input type="number" name="share" min="0" >
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn text-dark update">Register</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="container">
+                <div class="new_user">
+                    <a href="/companies">
+                        <button style="cursor: pointer;" class="btn text-dark update">Cancel</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- /form handling -->
+
+        </div>
+    </main>
+    <!-- /Main Site -->
+
+
+    <!-- include footer -->
+    <%- include('include/_footer.ejs') %>
+        <!-- /include footer -->

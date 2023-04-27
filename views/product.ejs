@@ -129,17 +129,17 @@
 <body>
     <div class="wrapper">
         <div class="product-img">
-            <img src="http://bit.ly/2tMBBTd" height="420" width="327">
+            <img src="<%= product.image%>" height="420" width="327">
         </div>
         <div class="product-info">
             <div class="product-text">
                 <h1>
-                    <%= data.productName %>
+                    <%= product.productName %>
                 </h1>
-                <h2>Amount : <%= data.amount %>$</h2>
+                <h2>Amount : <%= product.amount %>$</h2>
             </div>
             <div class="product-price-btn">
-                <a href="">
+                <a href="/buy/<%= product._id%>">
                     <button type="button">buy now</button>
                 </a>
                 <a href="/product">

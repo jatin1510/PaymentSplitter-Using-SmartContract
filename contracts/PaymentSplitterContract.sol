@@ -39,10 +39,6 @@ contract PaymentSplitterContract is UserContext {
             "PaymentSplitterContract : Please enter non zero address."
         );
         require(
-            companyShare[accountAddress] == 0,
-            "PaymentSplitterContract : This company already involved with contract."
-        );
-        require(
             shareAmount > 0,
             "PaymentSplitterContract :  Please enter positive share amount"
         );
@@ -86,16 +82,6 @@ contract PaymentSplitterContract is UserContext {
     event PaymentSend(address company, uint128 sendAmount);
     event PaymentAlreadyDone(address companyAccount, string mes);
 
-    function removeElement(address _element) private {
-        for (uint256 i; i < companies.length; i++) {
-            if (companies[i] == _element) {
-                companies[i] = companies[companies.length - 1];
-                companies.pop();
-                break;
-            }
-        }
-    }
-
     // Define function for send amount to company
     function sendCompanyAmount(address payable companyAccount) public virtual {
         uint128 possiblePayment = payableAmount(companyAccount);
@@ -108,12 +94,10 @@ contract PaymentSplitterContract is UserContext {
         totalPaid += possiblePayment;
         unchecked {
             companyReceivedAmount[companyAccount] += possiblePayment;
-            companyShare[companyAccount] -= possiblePayment;
-            totalShareAmount -= possiblePayment;
         }
 
         UserAddress.sendAmount(companyAccount, possiblePayment);
-        removeElement(companyAccount);
+        // removeElement(companyAccount);
         emit PaymentSend(companyAccount, possiblePayment);
     }
 
@@ -143,5 +127,25 @@ contract PaymentSplitterContract is UserContext {
             sendCompanyAmount(payable(companies[i]));
         }
         emit PaymentDone("Payment to all companies done.");
+    }
+
+    /*
+
+        Step-4
+        Define function for remove company from contract
+
+    */
+
+    function removeElement(address _element) private {
+        for (uint256 i; i < companies.length; i++) {
+            if (companies[i] == _element) {
+                companies[i] = companies[companies.length - 1];
+                companies.pop();
+                totalShareAmount -= companyShare[_element];
+                companyShare[_element] = 0;
+                companyReceivedAmount[_element] = 0;
+                break;
+            }
+        }
     }
 }

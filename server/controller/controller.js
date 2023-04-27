@@ -1,24 +1,9 @@
 const bcrypt = require('bcrypt');
-const { customer, admin, product, company } = require('../model/model');
+const { customer, admin, product, company, customerProduct } = require('../model/model');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const CONTACT_ABI = require('../../config.js');
-const CONTACT_ADDRESS = require('../../config.js');
-const Web3 = require('web3');
-require('dotenv').config({ path: 'config.env' });
-
-// Interaction with contract
-if (typeof web3 !== 'undefined') {
-    var web3 = new Web3(web3.currentProvider);
-} else {
-    var web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
-}
-const GAS_LIMIT = 1000000;
-var account0;
-web3.eth.getAccounts().then(function (result) {
-    account0 = result[0];
-})
-const paymentSplitter = new web3.eth.Contract(CONTACT_ABI.CONTRACT_ABI, CONTACT_ADDRESS.CONTRACT_ADDRESS);
+const { paymentSplitter, account0, GAS_LIMIT } = require('../web3/web3');
+const axios = require('axios');
 
 const cookie_expires_in = 24 * 60 * 60 * 1000;
 
@@ -106,7 +91,7 @@ exports.alreadyLoggedIn = async (req, res) => {
                     // res.render('studentProfile', { student: data });
                     // res.send(data);
                     res.redirect('/product');
-                    
+
                 }
             })
             .catch((err) => {
@@ -224,17 +209,17 @@ exports.addProduct = async (req, res) => {
         return;
     }
 
-    console.log(req.body);
     const user = new product({
         productName: req.body.productName,
         amount: req.body.amount,
+        image: req.body.image,
     })
 
     // save company in the database
     user
         .save(user)
         .then((data) => {
-            res.send(data);
+            res.redirect('/product');
         })
         .catch(err => {
             res.status(500).send({
@@ -250,6 +235,7 @@ exports.addCompany = async (req, res) => {
     }
 
     console.log(req.body);
+    console.log(paymentSplitter);
     const address = req.body.address;
     const id = req.body.product;
     const share = req.body.share;
@@ -275,7 +261,7 @@ exports.addCompany = async (req, res) => {
             .then(async (data) => {
                 console.log(await paymentSplitter.methods.payableAmount(address).call());
                 await product.findByIdAndUpdate(id, { amount: prod.amount + share }, { useFindAndModify: false });
-                res.send(data);
+                res.redirect('/companies');
             })
             .catch(err => {
                 res.status(500).send({
@@ -286,38 +272,88 @@ exports.addCompany = async (req, res) => {
     catch (err) {
         res.send(err);
     }
-    // }
-    // else {
-    //     res.send('Share should be less than product amount');
-    // }
+}
+
+exports.buyProdut = async (req, res) => {
+
+    const productId = req.params.id
+    const customerProd = new customerProduct({
+        customerId: req.id,
+        productId: productId,
+    })
+
+
+    customerProd
+        .save(customerProd)
+        .then(async (data) => {
+            res.redirect('/product');
+        })
+}
+
+exports.payNow = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        company.find({ product: productId })
+            .then(async (data) => {
+                for (var i = 0; i < data.length; i++) {
+                    // console.log(account0);
+                    await paymentSplitter.methods.sendCompanyAmount(data[i].address).send({ from: account0, gas: GAS_LIMIT });
+                }
+                customerProduct.deleteOne({ customerId: req.id, productId: productId })
+                    .then(async (data) => {
+                        res.redirect(`/product`);
+                    })
+            });
+    } catch (err) {
+        res.send(err);
+    }
+};
+
+exports.deleteIt = async (req, res) => {
+    const companyId = req.query.companyId;
+    const productId = req.query.productId;
+    if (!productId) {
+        console.log(companyId);
+        try {
+            const data = await company.findById(companyId);
+            await paymentSplitter.methods.removeElement(data.address).send({ from: account0, gas: GAS_LIMIT });
+            company.findByIdAndDelete(companyId)
+                .then(async (data) => {
+                    res.send(data);
+                })
+        } catch (err) {
+            res.send(err);
+        }
+    }
+    else {
+        try {
+            company.find({ product: productId })
+                .then(async (data) => {
+                    for (var i = 0; i < data.length; i++) {
+                        await axios.get(`http://localhost:3000/delete?companyId=${data[i]._id}`).then();
+                    }
+                    product.findByIdAndDelete(productId)
+                        .then((data) => {
+                            res.send(data);
+                        })
+                })
+        } catch (err) {
+            res.send(err);
+        }
+    }
 };
 
 
 
+// module.exports = { paymentSplitter, account0 };
 
 
 
 
-
-// Interaction with contract
-// if (typeof web3 !== 'undefined') {
-//     var web3 = new Web3(web3.currentProvider);
-// } else {
-//     var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
-// }
-
-// var account0;
-// web3.eth.getAccounts().then(function (result)
-// {
-//     account0 = result[0];
-// })
-// const paymentSplitter = new web3.eth.Contract(CONTACT_ABI.CONTRACT_ABI, CONTACT_ADDRESS.CONTRACT_ADDRESS);
-
-// exports.totalShare = async (req, res) =>
-// {
-//     // console.log(await paymentSplitter);
-//     res.send(await paymentSplitter.methods.totalShareAmounts().call());
-// };
+exports.totalShare = async (req, res) => {
+    // console.log(await paymentSplitter);
+    res.send(await paymentSplitter.methods.totalShareAmounts().call());
+};
 
 // exports.totalPaid = async (req, res) =>
 // {

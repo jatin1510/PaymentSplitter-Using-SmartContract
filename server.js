@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyparser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const cookie = require('cookie-parser');
 
 
 const connectDB = require('./server/database/connection');
@@ -13,6 +14,8 @@ app.use(cors());
 
 dotenv.config({ path: 'config.env' });
 const PORT = process.env.PORT || 8080;
+
+app.use(cookie());
 
 // log requests
 app.use(morgan('tiny'));

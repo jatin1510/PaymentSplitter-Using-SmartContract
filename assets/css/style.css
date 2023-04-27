@@ -248,3 +248,32 @@ select, button {
   'GRAD' 0,
   'opsz' 48
 }
+
+button{
+    cursor: pointer;
+}
+
+.delete:hover i{
+    color: red;
+    transition: all 0.5s;
+    transform: scale(1.16);
+}
+
+.edit:hover i{
+    color: purple;
+    transition: all 0.5s;
+    transform: scale(1.16);
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover, .material-symbols-outlined:hover{
+    transition: all 0.5s;
+    transform: scale(1.16);
+}
+
+.material-symbols-outlined:hover{
+    color:yellow;
+}

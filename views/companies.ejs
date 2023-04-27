@@ -1,0 +1,66 @@
+<!-- include header -->
+<%- include('include/_header.ejs') %>
+    <!-- /include header -->
+
+    <!-- Main Site -->
+    <main id="site-main">
+        <div class="container">
+            <div class="box-nav d-flex justify-between">
+                <a href="/product">
+                    <button>Back</button>
+                </a>
+                <a href="/companyForm">
+                    <button type="button">Add Company <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                </a>
+            </div>
+            <!-- form handling -->
+            <form action="/" method="POST">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>No.</th>
+                            <th>Address</th>
+                            <th>Share amount</th>
+                            <th>Total Payment</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%for(var i=0; i< company.length;i++) {%>
+                            <tr>
+                                <td>
+                                    <%= i %>
+                                </td>
+                                <!-- <script>
+                                    var div=document.createElement("td");
+                                    div.innerHTML='<p><%= company[i].address %></p>';
+                                    var excerpt=div.innerText.substring(0,7)+"...";
+                                    document.write(excerpt);
+                                </script> -->
+                                <td>
+                                    <%= company[i].address.substring(0,10) + "..." %>
+                                </td>
+                                <td>
+                                    <%= shareAmount[i] %>
+                                </td>
+                                <td>
+                                    <%= amount[i] %>
+                                </td>
+                                <td>
+                                    <a class="delete" href="/deleteCompany/<%= company[i]._id %>">
+                                        <i style='font-size:24px' class='fas'>&#xf1f8;</i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <%}%>
+                    </tbody>
+                </table>
+            </form>
+            <!-- /form handling -->
+        </div>
+    </main>
+    <!-- /Main Site -->
+
+    <!-- include footer -->
+    <%- include('include/_footer.ejs') %>
+        <!-- /include footer -->
