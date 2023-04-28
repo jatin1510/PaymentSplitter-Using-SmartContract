@@ -343,23 +343,39 @@ exports.deleteIt = async (req, res) => {
     }
 };
 
+exports.totalShare = async (req, res) => {
+    // console.log(await paymentSplitter);
+    try{
 
+        res.send(await paymentSplitter.methods.totalShareAmounts().call());
+    }catch(err){
+        res.send(err);
+    }
+};
+
+exports.totalPaid = async (req, res) => {
+    try{
+        res.send(await paymentSplitter.methods.totalPaidAmount().call());
+    }catch(err){
+        res.send(err);
+    }
+};
+
+exports.payAll = async (req, res) => {
+    try{
+        await paymentSplitter.methods.payAll().send({ from: account0, gas: GAS_LIMIT });
+        res.redirect('/companies');
+    }catch(err){
+        res.send(err);
+    }
+}
 
 // module.exports = { paymentSplitter, account0 };
 
 
 
 
-exports.totalShare = async (req, res) => {
-    // console.log(await paymentSplitter);
-    res.send(await paymentSplitter.methods.totalShareAmounts().call());
-};
 
-// exports.totalPaid = async (req, res) =>
-// {
-//     // console.log(await paymentSplitter);
-//     res.send(await paymentSplitter.methods.totalPaidAmount().call());
-// };
 
 // exports.payableAmount = async (req, res) =>
 // {

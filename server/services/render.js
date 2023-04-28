@@ -55,11 +55,24 @@ exports.companies = async (req, res) => {
             .then(async (data) => {
                 var amount = [];
                 var shareAmount = [];
+                var pending = [];
                 for (var i = 0; i < data.length; i++) {
                     amount.push(await paymentSplitter.methods.alreadyReceived(data[i].address).call());
                     shareAmount.push(await paymentSplitter.methods.payableAmount(data[i].address).call());
+                    if (await customerProduct.findOne({ productId: data[i].product })) {
+                        pending.push(1);
+                    }
+                    else {
+                        pending.push(0);
+                    }
                 }
-                res.render('companies', { company: data, amount: amount, shareAmount: shareAmount });
+                const totalShare = await axios.get('http://localhost:3000/totalShare').then(async (data) => {
+                    return data.data;
+                });
+                const totalPaid = await axios.get('http://localhost:3000/totalPaid').then(async (data) => {
+                    return data.data;
+                });
+                res.render('companies', { company: data, amount: amount, shareAmount: shareAmount, totalShare: totalShare, totalPaid: totalPaid, pending: pending });
             })
     } catch (err) {
         res.send(err);
@@ -97,6 +110,27 @@ exports.deleteProduct = async (req, res) => {
         await axios.get(`http://localhost:3000/delete?productId=${req.params.productId}`).then(async (data) => {
             res.redirect('/product');
         })
+    } catch (err) {
+        res.send(err);
+    }
+}
+
+exports.addAdmin = async (req, res) => {
+    try {
+        res.render('registerAdmin');
+    } catch (err) {
+        res.send(err);
+    }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        // res.cookie("jwt", "");
+        // res.redirect('/');
+        res
+            .clearCookie("jwt")
+            .status(200)
+            .redirect('/');
     } catch (err) {
         res.send(err);
     }

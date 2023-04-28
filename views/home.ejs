@@ -20,8 +20,9 @@
                     </a>
                 <% }%>
                 <% if(flag1!=0 && flag2==0){ %>
-                    <a href="/product?customerId=<%= customerId %>">
-                        <button type="button">Pending</button>
+                    <a class="border-shadow" href="/product?customerId=<%= customerId %>">
+                        <!-- <button type="button">Pending</button> -->
+                        <span class="text-gradient">Pending</span>
                     </a>
                 <%} else if(flag2==0){%>
                     <button>Nothing pending</button>

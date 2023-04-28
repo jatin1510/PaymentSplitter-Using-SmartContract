@@ -253,6 +253,10 @@ button{
     cursor: pointer;
 }
 
+.delete i{
+    color: blue;
+}
+
 .delete:hover i{
     color: red;
     transition: all 0.5s;
@@ -276,4 +280,10 @@ a:hover, .material-symbols-outlined:hover{
 
 .material-symbols-outlined:hover{
     color:yellow;
+}
+
+.hed{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

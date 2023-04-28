@@ -13,6 +13,18 @@
                     <button type="button">Add Company <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                 </a>
             </div>
+            <div class="box-nav d-flex justify-between">
+                <a>
+                    <button type="button">Total Share Amount : <%= totalShare %></button>
+                </a>
+                <a href="/payAll">
+                    <button type="button">Pay All</button>
+                </a>
+                <a>
+                    <button type="button">Total Paid Amount : <%= totalPaid %></button>
+                </a>
+
+            </div>
             <!-- form handling -->
             <form action="/" method="POST">
                 <table class="table">
@@ -22,6 +34,7 @@
                             <th>Address</th>
                             <th>Share amount</th>
                             <th>Total Payment</th>
+                            <th>Pending</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
@@ -45,6 +58,13 @@
                                 </td>
                                 <td>
                                     <%= amount[i] %>
+                                </td>
+                                <td>
+                                    <% if(pending[i]==1) {%>
+                                        <i style='font-size:24px' class='fas'>&#xf141;</i>
+                                    <% }else {%>
+                                        <i style='font-size:24px' class='fas'>&#xf058;</i>
+                                    <% } %>
                                 </td>
                                 <td>
                                     <a class="delete" href="/deleteCompany/<%= company[i]._id %>">

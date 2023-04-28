@@ -12,9 +12,14 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .hed{
+            margin-left: 17ex;
+            margin-right: 17ex;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,8 +27,9 @@
     <header id="header">
         <nav>
             <div class="container">
-                <div class="text-center">
+                <div class="text-center hed">
                     <a class="nav-brand text-dark">Payment Splitter using Smart Contract</a>
+                    <a href="/logout" class="nav-brand text-dark">Log-out</a>
                 </div>
             </div>
         </nav>
@@ -36,12 +42,12 @@
 
 
             <div class="form-title text-center">
-                <h2 class="text-dark">Register Customer</h2>
+                <h2 class="text-dark">Register Admin</h2>
             </div>
 
             <!-- add user form -->
             <!-- form handling -->
-            <form action="/registerCustomer" method="POST" id="add_user">
+            <form action="/registerAdmin" method="POST" id="add_user">
                 <div class="new_user">
                     <div class="form-group">
                         <label for="Email" class="text-light">Email</label>
@@ -67,8 +73,8 @@
 
             <div class="container">
                 <div class="new_user">
-                    <a href="/">
-                        <button style="cursor: pointer;" class="btn text-dark update">Login</button>
+                    <a href="/product">
+                        <button style="cursor: pointer;" class="btn text-dark update">Cancel</button>
                     </a>
                 </div>
             </div>
