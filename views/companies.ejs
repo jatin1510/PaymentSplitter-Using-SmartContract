@@ -5,6 +5,7 @@
     <!-- Main Site -->
     <main id="site-main">
         <div class="container">
+            <button style="margin-bottom: 5ex; background-color:black; color:white;height:7ex" type="button"><b>Companies</b></button>
             <div class="box-nav d-flex justify-between">
                 <a href="/product">
                     <button>Back</button>
@@ -17,9 +18,12 @@
                 <a>
                     <button type="button">Total Share Amount : <%= totalShare %></button>
                 </a>
-                <a href="/payAll">
-                    <button type="button">Pay All</button>
-                </a>
+                <% if(flag==1){ %>
+                    <a href="/payAll">
+                        <button type="button">Pay All</button>
+                    </a>
+                    
+                <% } %>
                 <a>
                     <button type="button">Total Paid Amount : <%= totalPaid %></button>
                 </a>

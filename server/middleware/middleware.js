@@ -45,7 +45,6 @@ exports.authorizationAdmin = (req, res, next) =>
         req.id = data.id;
         req.email = data.email;
         req.role = data.role;
-
         if (req.role !== "Admin") {
             return res
                 .status(500)

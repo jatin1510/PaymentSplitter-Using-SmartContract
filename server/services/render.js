@@ -2,24 +2,29 @@ const axios = require('axios');
 const { customer, admin, product, company, customerProduct } = require('../model/model');
 const { paymentSplitter, account0 } = require('../web3/web3')
 
-exports.homeRoutes = (req, res) => {
+exports.homeRoutes = (req, res) =>
+{
     res.render('loginPage');
 }
 
-exports.home = (req, res) => {
+exports.home = (req, res) =>
+{
     res.render('home');
 }
 
-exports.register = (req, res) => {
+exports.register = (req, res) =>
+{
     res.render('registerPage');
 }
 
-exports.products = async (req, res) => {
+exports.products = async (req, res) =>
+{
     const id = req.query.id;
     const customerId = req.query.customerId;
     if (!id && !customerId) {
         product.find()
-            .then(async (data) => {
+            .then(async (data) =>
+            {
                 const flag = await customerProduct.findOne({ customerId: req.id });
                 if (!flag) {
                     res.render('home', { product: data, role: req.role, flag1: 0, flag2: 0, customerId: req.id });
@@ -31,13 +36,15 @@ exports.products = async (req, res) => {
     }
     else if (!customerId) {
         product.findById(id)
-            .then(async (data) => {
+            .then(async (data) =>
+            {
                 res.render('product', { product: data });
             })
     }
     else {
         customerProduct.find({ customerId: customerId })
-            .then(async (data) => {
+            .then(async (data) =>
+            {
                 var ls = [];
                 var date = [];
                 for (var i = 0; i < data.length; i++) {
@@ -50,13 +57,20 @@ exports.products = async (req, res) => {
     }
 }
 
-exports.companies = async (req, res) => {
+exports.companies = async (req, res) =>
+{
     try {
         company.find()
-            .then(async (data) => {
+            .then(async (data) =>
+            {
+                if (!data) {
+                    res.render('error', { message: 'No company found' });
+                    return;
+                }
                 var amount = [];
                 var shareAmount = [];
                 var pending = [];
+                var cn = 0;
                 for (var i = 0; i < data.length; i++) {
                     amount.push(await paymentSplitter.methods.alreadyReceived(data[i].address).call());
                     shareAmount.push(await paymentSplitter.methods.payableAmount(data[i].address).call());
@@ -65,22 +79,28 @@ exports.companies = async (req, res) => {
                     }
                     else {
                         pending.push(0);
+                        cn++;
                     }
                 }
-                const totalShare = await axios.get('http://localhost:3000/totalShare').then(async (data) => {
+                const totalShare = await axios.get('http://localhost:3000/totalShare').then(async (data) =>
+                {
                     return data.data;
                 });
-                const totalPaid = await axios.get('http://localhost:3000/totalPaid').then(async (data) => {
+                const totalPaid = await axios.get('http://localhost:3000/totalPaid').then(async (data) =>
+                {
                     return data.data;
                 });
-                res.render('companies', { company: data, amount: amount, shareAmount: shareAmount, totalShare: totalShare, totalPaid: totalPaid, pending: pending });
+                var flag=(cn == 0);
+                console.log(flag);
+                res.render('companies', { company: data, amount: amount, shareAmount: shareAmount, totalShare: totalShare, totalPaid: totalPaid, pending: pending,flag:flag });
             })
     } catch (err) {
         res.send(err);
     }
 }
 
-exports.productForm = async (req, res) => {
+exports.productForm = async (req, res) =>
+{
     try {
         res.render('productForm');
     } catch (err) {
@@ -88,7 +108,8 @@ exports.productForm = async (req, res) => {
     }
 }
 
-exports.companyForm = async (req, res) => {
+exports.companyForm = async (req, res) =>
+{
     try {
         res.render('companyForm');
     } catch (err) {
@@ -96,9 +117,11 @@ exports.companyForm = async (req, res) => {
     }
 }
 
-exports.deleteCompany = async (req, res) => {
+exports.deleteCompany = async (req, res) =>
+{
     try {
-        await axios.get(`http://localhost:3000/delete?companyId=${req.params.companyId}`).then(async (data) => {
+        await axios.get(`http://localhost:3000/delete?companyId=${req.params.companyId}`).then(async (data) =>
+        {
             res.redirect('/companies');
         });
     } catch (err) {
@@ -106,9 +129,11 @@ exports.deleteCompany = async (req, res) => {
     }
 }
 
-exports.deleteProduct = async (req, res) => {
+exports.deleteProduct = async (req, res) =>
+{
     try {
-        await axios.get(`http://localhost:3000/delete?productId=${req.params.productId}`).then(async (data) => {
+        await axios.get(`http://localhost:3000/delete?productId=${req.params.productId}`).then(async (data) =>
+        {
             res.redirect('/product');
         })
     } catch (err) {
@@ -116,7 +141,8 @@ exports.deleteProduct = async (req, res) => {
     }
 }
 
-exports.addAdmin = async (req, res) => {
+exports.addAdmin = async (req, res) =>
+{
     try {
         res.render('registerAdmin');
     } catch (err) {
@@ -124,7 +150,8 @@ exports.addAdmin = async (req, res) => {
     }
 }
 
-exports.logout = async (req, res) => {
+exports.logout = async (req, res) =>
+{
     try {
         // res.cookie("jwt", "");
         // res.redirect('/');

@@ -187,7 +187,7 @@ exports.registerAdmin = async (req, res) => {
                 .then(async (data) => {
                     const token = await generateToken(data._id, user.email, "Admin");
                     res.cookie("jwt", token, { maxAge: cookie_expires_in, httpOnly: true });
-                    res.send(user);
+                    res.redirect('/product');
                 })
                 .catch(err => {
                     res.status(500).send({
@@ -380,34 +380,3 @@ exports.payAll = async (req, res) => {
         res.send(err);
     }
 }
-
-// module.exports = { paymentSplitter, account0 };
-
-
-
-
-
-
-// exports.payableAmount = async (req, res) =>
-// {
-//     console.log(await paymentSplitter);
-//     res.send(await paymentSplitter.methods.payableAmount("0x8fE55e5D2957d800b130d3337D8a7804Ab6Ad237").call());
-// };
-
-// exports.addCompany = async (req, res) =>
-// {
-//     // console.log(await paymentSplitter);
-//     await paymentSplitter.methods.addCompany("0x8fE55e5D2957d800b130d3337D8a7804Ab6Ad237", 100).send({ from: account0, gas: 1000000 });
-//     res.redirect('/totalShare');
-// };
-
-// exports.alreadyReceived = async (req, res) =>
-// {
-//     res.send(await paymentSplitter.methods.alreadyReceived("0x8fE55e5D2957d800b130d3337D8a7804Ab6Ad237").call());
-// };
-
-// exports.sendCompany = async (req, res) =>
-// {
-//     await paymentSplitter.methods.sendCompanyAmount("0x8fE55e5D2957d800b130d3337D8a7804Ab6Ad237").send({ from: account0, gas: 1000000 });
-//     res.redirect('/alreadyReceived');
-// };
