@@ -20,11 +20,12 @@ exports.products = async (req, res) => {
     if (!id && !customerId) {
         product.find()
             .then(async (data) => {
-                if (await customerProduct.findOne({ email: req.email })) {
-                    res.render('home', { product: data, role: req.role, flag1: 1, flag2: 0, customerId: req.id });
+                const flag = await customerProduct.findOne({ customerId: req.id });
+                if (!flag) {
+                    res.render('home', { product: data, role: req.role, flag1: 0, flag2: 0, customerId: req.id });
                 }
                 else {
-                    res.render('home', { product: data, role: req.role, flag1: 0, flag2: 0, customerId: req.id });
+                    res.render('home', { product: data, role: req.role, flag1: 1, flag2: 0, customerId: req.id });
                 }
             })
     }

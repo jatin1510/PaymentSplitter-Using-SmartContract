@@ -132,11 +132,11 @@ contract PaymentSplitterContract is UserContext {
     /*
 
         Step-4
-        Define function for remove company from contract
+        Define function to remove company from contract
 
     */
 
-    function removeElement(address _element) private {
+    function removeElement(address _element) public {
         for (uint256 i; i < companies.length; i++) {
             if (companies[i] == _element) {
                 companies[i] = companies[companies.length - 1];

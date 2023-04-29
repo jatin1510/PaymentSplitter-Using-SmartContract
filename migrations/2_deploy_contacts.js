@@ -6,5 +6,5 @@ module.exports = async function (deployer)
 {
   deployer.deploy(userAddress);
   deployer.deploy(userContext)
-  deployer.deploy(paymentSplitter, { from: "0xeB71B31A3b266525752acb1F214cb59CeC0d76A8", value: "10000000000000000000" });
+  deployer.deploy(paymentSplitter, { from: "0xc8D8be098265782988af8f43dc7A29BdD43e702E", value: "10000000000000000000" });
 };

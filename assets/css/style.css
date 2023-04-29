@@ -253,18 +253,16 @@ button{
     cursor: pointer;
 }
 
+.material-symbols-outlined{
+    color: purple;
+}
+
 .delete i{
     color: blue;
 }
 
 .delete:hover i{
     color: red;
-    transition: all 0.5s;
-    transform: scale(1.16);
-}
-
-.edit:hover i{
-    color: purple;
     transition: all 0.5s;
     transform: scale(1.16);
 }

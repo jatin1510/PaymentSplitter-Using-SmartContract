@@ -145,8 +145,8 @@ exports.registerCustomer = async (req, res) => {
             // save company in the database
             user
                 .save(user)
-                .then((data) => {
-                    const token = generateToken(data._id, data.email, "Customer");
+                .then(async (data) => {
+                    const token = await generateToken(data._id, data.email, "Customer");
                     res.cookie("jwt", token, { maxAge: cookie_expires_in, httpOnly: true });
                     // res.send(user);
                     res.redirect('/product');
@@ -184,8 +184,8 @@ exports.registerAdmin = async (req, res) => {
             // save company in the database
             user
                 .save(user)
-                .then((data) => {
-                    const token = generateToken(data._id, user.email, "Admin");
+                .then(async (data) => {
+                    const token = await generateToken(data._id, user.email, "Admin");
                     res.cookie("jwt", token, { maxAge: cookie_expires_in, httpOnly: true });
                     res.send(user);
                 })
@@ -234,13 +234,14 @@ exports.addCompany = async (req, res) => {
         return;
     }
 
-    console.log(req.body);
-    console.log(paymentSplitter);
+    // console.log(req.body);
+    // console.log(paymentSplitter);
     const address = req.body.address;
-    const id = req.body.product;
+    const product1 = req.body.product;
     const share = req.body.share;
 
-    const prod = await product.findById(id);
+    const prod = await product.findOne({ productName: product1 });
+    const id = prod._id;
     // console.log(id)
     // if (share <= prod.amount) {
     try {
@@ -260,7 +261,7 @@ exports.addCompany = async (req, res) => {
             .save(user)
             .then(async (data) => {
                 console.log(await paymentSplitter.methods.payableAmount(address).call());
-                await product.findByIdAndUpdate(id, { amount: prod.amount + share }, { useFindAndModify: false });
+                await product.findByIdAndUpdate(id, { amount: parseInt(prod.amount) + parseInt(share) }, { useFindAndModify: false });
                 res.redirect('/companies');
             })
             .catch(err => {
@@ -313,14 +314,22 @@ exports.deleteIt = async (req, res) => {
     const companyId = req.query.companyId;
     const productId = req.query.productId;
     if (!productId) {
-        console.log(companyId);
         try {
             const data = await company.findById(companyId);
-            await paymentSplitter.methods.removeElement(data.address).send({ from: account0, gas: GAS_LIMIT });
-            company.findByIdAndDelete(companyId)
-                .then(async (data) => {
-                    res.send(data);
-                })
+            const pro = await customerProduct.findOne({ productId: data.product });
+            console.log(data);
+            if (!pro) {
+                const am = await paymentSplitter.methods.payableAmount(data.address).call();
+                await product.findByIdAndUpdate(data.product, { $inc: { amount: parseInt(am) * (-1) } });
+                await paymentSplitter.methods.removeElement(data.address).send({ from: account0, gas: GAS_LIMIT });
+                company.findByIdAndDelete(companyId)
+                    .then(async (data) => {
+                        res.send(data);
+                    })
+            } else {
+                console.log("Company's payments are still pending.");
+                res.send("Company's payments are still pending.");
+            }
         } catch (err) {
             res.send(err);
         }
@@ -330,7 +339,8 @@ exports.deleteIt = async (req, res) => {
             company.find({ product: productId })
                 .then(async (data) => {
                     for (var i = 0; i < data.length; i++) {
-                        await axios.get(`http://localhost:3000/delete?companyId=${data[i]._id}`).then();
+                        console.log(data);
+                        await axios.get(`http://localhost:3000/delete?companyId=${data[i]._id}`);
                     }
                     product.findByIdAndDelete(productId)
                         .then((data) => {
@@ -345,27 +355,28 @@ exports.deleteIt = async (req, res) => {
 
 exports.totalShare = async (req, res) => {
     // console.log(await paymentSplitter);
-    try{
+    try {
 
         res.send(await paymentSplitter.methods.totalShareAmounts().call());
-    }catch(err){
+    } catch (err) {
         res.send(err);
     }
 };
 
 exports.totalPaid = async (req, res) => {
-    try{
+    try {
         res.send(await paymentSplitter.methods.totalPaidAmount().call());
-    }catch(err){
+    } catch (err) {
         res.send(err);
     }
 };
 
 exports.payAll = async (req, res) => {
-    try{
+    try {
         await paymentSplitter.methods.payAll().send({ from: account0, gas: GAS_LIMIT });
+        await customerProduct.deleteMany({});
         res.redirect('/companies');
-    }catch(err){
+    } catch (err) {
         res.send(err);
     }
 }

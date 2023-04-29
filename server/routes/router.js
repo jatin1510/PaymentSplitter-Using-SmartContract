@@ -29,6 +29,7 @@ route.get('/payNow/:productId', authorization, controller.payNow);
 route.get('/companies', authorizationAdmin, services.companies);
 route.get('/delete', controller.deleteIt);
 route.get('/deleteCompany/:companyId', authorizationAdmin, services.deleteCompany);
+route.get('/deleteProduct/:productId', authorizationAdmin, services.deleteProduct);
 route.get('/payAll', authorizationAdmin, controller.payAll);
 route.get('/logout', authorization, services.logout);
 

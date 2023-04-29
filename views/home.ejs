@@ -22,10 +22,10 @@
                 <% if(flag1!=0 && flag2==0){ %>
                     <a class="border-shadow" href="/product?customerId=<%= customerId %>">
                         <!-- <button type="button">Pending</button> -->
-                        <span class="text-gradient">Pending</span>
+                        <span class="text-gradient">Pending Payments</span>
                     </a>
                 <%} else if(flag2==0){%>
-                    <button>Nothing pending</button>
+                    <button>No Payment pending</button>
                 <%} else if(flag2!=0){%>
                     <a href="/product">
                         <button type="button">Back</button>
@@ -72,11 +72,21 @@
                                     </td>
                                     <%}%>
                                 <%if(flag2==0){%>
-                                    <td><a class="btn-border-shadow update" href="/product?id=<%= product[i]._id %>">
-                                        <span class="material-symbols-outlined">
-                                            shopping_cart_checkout
-                                        </span>
-                                    </a></td>
+                                    <td>
+                                        <% if(product[i].amount != 0){ %>
+                                            <a class="btn-border-shadow" href="/product?id=<%= product[i]._id %>">
+                                                <span class="material-symbols-outlined">
+                                                    shopping_cart_checkout
+                                                </span>
+                                            </a>
+                                        <%}else{%>
+                                            <a class="btn-border-shadow">
+                                                <span class="material-symbols-outlined">
+                                                    shopping_cart_checkout
+                                                </span>
+                                            </a>
+                                        <%}%>
+                                    </td>
                                 <%}else{%>
                                     <td>
                                         <a href="/payNow/<%= product[i]._id %>">
@@ -86,7 +96,7 @@
                                     <%}%>
                                 <% if(flag2==0 && role=="Admin") {%>
                                     <td>
-                                        <a class="delete" href="">
+                                        <a class="delete" href="/deleteProduct/<%= product[i]._id %>">
                                             <i  style='font-size:24px' class='fas'>&#xf1f8;</i>
                                         </a>
                                     </td>

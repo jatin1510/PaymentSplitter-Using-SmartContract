@@ -21,14 +21,14 @@ const productSchema = new Schema({
 });
 
 const companySchema = new Schema({
-    address: { type: String, required: true },
+    address: { type: String, required: true, unique: true },
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
 });
 
 const customerProductSchema = new Schema({
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', require: true },
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', require: true },
-    date: {type: Date, default: new Date()}
+    date: { type: Date, default: new Date() }
 });
 
 const customer = mongoose.model('Customer', customerSchema);

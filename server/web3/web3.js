@@ -10,7 +10,7 @@ if (typeof web3 !== 'undefined') {
     var web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
 }
 const GAS_LIMIT = 1000000;
-const account0 = "0x7D5fAAa3B2ffdE81AC8d587961B1040Dd9Abc416";
+const account0 = "0x0A48D448F81A78bD85eC37e2EBEF98acA0Ca30E3";
 const paymentSplitter = new web3.eth.Contract(CONTACT_ABI.CONTRACT_ABI, CONTACT_ADDRESS.CONTRACT_ADDRESS);
 
 module.exports = { paymentSplitter, account0, GAS_LIMIT };
